@@ -105,7 +105,7 @@ def preprocess_and_augment(input_dir: str, output_dir: str, n_augment: int = 5):
 
 if __name__ == "__main__":
     preprocess_and_augment(
-        input_dir="data/train",
-        output_dir="data/train_augmented",
+        input_dir="../data/train",
+        output_dir="../data/train_augmented",
         n_augment=5
     )

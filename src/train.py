@@ -10,16 +10,16 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 from model import EmotionCNN
 
-pt_path = "modoels/best_model.pt"
+pt_path = "../models/best_model.pt"
 transform = transforms.Compose([
     transforms.Grayscale(num_output_channels=1),
     transforms.Resize((48,48)),
     transforms.ToTensor()
 ])
 
-train_dataset = datasets.ImageFolder(root="data/train_augmented", transform=transform)
+train_dataset = datasets.ImageFolder(root="../data/train_augmented", transform=transform)
 
-train_loader = DataLoader(train_dataset, batch_size=64, shuffle=False, pin_memory=True)
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True, pin_memory=True)
 
 model = EmotionCNN()
 
@@ -43,9 +43,9 @@ else:
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.0005)
 
-epochs = 20
+epochs = 15
 
 for epoch in range(epochs):
     model.train()
