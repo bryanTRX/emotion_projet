@@ -10,19 +10,16 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 from model import EmotionCNN
 
-pt_path = "best_model.pt"
+pt_path = "modoels/best_model.pt"
 transform = transforms.Compose([
     transforms.Grayscale(num_output_channels=1),
     transforms.Resize((48,48)),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5,), (0.5,))
+    transforms.ToTensor()
 ])
 
-train_dataset = datasets.ImageFolder(root="../data/train_augmented", transform=transform)
-test_dataset = datasets.ImageFolder(root="../data/test", transform=transform)
+train_dataset = datasets.ImageFolder(root="data/train_augmented", transform=transform)
 
-train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=False, pin_memory=True)
 
 model = EmotionCNN()
 
@@ -48,7 +45,7 @@ else:
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-epochs = 15
+epochs = 20
 
 for epoch in range(epochs):
     model.train()
@@ -82,22 +79,6 @@ for epoch in range(epochs):
 torch.save(model.state_dict(), pt_path)
 print("✅ Modèle sauvegardé !")
 
-model.eval()
-
-onnx_path="best_model.onnx"
-dummy_input = torch.randn(1, 1, 48, 48, device=device)
-torch.onnx.export(
-        model,
-        dummy_input,
-        onnx_path,
-        export_params=True,
-        opset_version=11,
-        do_constant_folding=True,
-        input_names=['input'],
-        output_names=['output'],
-        dynamic_axes={'input': {0: 'batch_size'}, 'output': {0: 'batch_size'}}
-    )
-print(f"✅ Modèle exporté en ONNX : {onnx_path}")
 
 
 
