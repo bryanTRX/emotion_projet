@@ -23,9 +23,6 @@ class EmotionCNN(nn.Module):
             nn.Conv2d(64, 128, kernel_size=3, padding=1),
             nn.ReLU(),
             
-            nn.Conv2d(128, 128, kernel_size=3, padding=1),
-            nn.ReLU(),
-            
             nn.BatchNorm2d(128),
             nn.Dropout(0.25),
             
@@ -40,7 +37,7 @@ class EmotionCNN(nn.Module):
             
             nn.Linear(128*12*12, 128),
             nn.ReLU(),
-            nn.Dropout(0.5),
+            nn.Dropout(0.35),
             
             nn.Linear(128, 7)
         )
