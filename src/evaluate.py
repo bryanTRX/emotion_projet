@@ -33,7 +33,7 @@ def evaluate_model(
     test_dataset = datasets.ImageFolder(test_dir, transform=transform)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
     num_classes = len(test_dataset.classes)
-    model = EmotionCNN(num_classes=num_classes).to(device)
+    model = EmotionCNN().to(device)
     model.to(device)
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
