@@ -10,7 +10,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 from model import EmotionCNN
 
-pt_path = "../models/best_model.pt"
+pt_path = "models/best_model.pt"
 transform = transforms.Compose([
     transforms.Grayscale(num_output_channels=1),
     transforms.Resize((48,48)),
