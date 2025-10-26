@@ -9,24 +9,32 @@ from model import EmotionCNN
 
 
 def evaluate_model(
-    model_path: str = "models/best_model.pt",
-    test_dir: str = "data/test",
+    model_path: str = "../models/best_model.pt",
+    test_dir: str = "../data/test",
     batch_size: int = 64
 ):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"🧪 Évaluation sur : {device}")
+    device = (
+    torch.device("mps")
+    if torch.backends.mps.is_available()
+    else torch.device("cpu")
+)
+    print(f"✅ Utilisation du device : {device}")
+    print(f"Modèle envoyé sur : {device}")
 
     transform = transforms.Compose([
         transforms.Grayscale(num_output_channels=1),
-        transforms.Resize((48, 48)),
+        transforms.Resize((48,48)),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomRotation(15),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2),
         transforms.ToTensor(),
-        transforms.Normalize((0.5,), (0.5,))
     ])
 
     test_dataset = datasets.ImageFolder(test_dir, transform=transform)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
     num_classes = len(test_dataset.classes)
     model = EmotionCNN(num_classes=num_classes).to(device)
+    model.to(device)
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
 

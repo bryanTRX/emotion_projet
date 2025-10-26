@@ -14,6 +14,9 @@ pt_path = "../models/best_model.pt"
 transform = transforms.Compose([
     transforms.Grayscale(num_output_channels=1),
     transforms.Resize((48,48)),
+    transforms.RandomHorizontalFlip(),
+    transforms.RandomRotation(10),
+    transforms.ColorJitter(brightness=0.2, contrast=0.2),
     transforms.ToTensor()
 ])
 
