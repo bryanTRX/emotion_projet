@@ -9,8 +9,8 @@ from model import EmotionCNN
 
 
 def evaluate_model(
-    model_path: str = "../models/best_model.pt",
-    test_dir: str = "../data/test",
+    model_path: str = "models/best_model.pth",
+    test_dir: str = "data/test",
     batch_size: int = 64
 ):
     device = (
