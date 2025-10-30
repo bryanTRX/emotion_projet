@@ -4,24 +4,24 @@ import random
 from tqdm import tqdm
 import hashlib
 
-def rotate_image(img: Image.Image) -> Image.Image:
-    angle = random.uniform(-15, 15)
-    return img.rotate(angle, fillcolor=0)
+def rotate_image(img: Image.Image, angle_range=(-15, 15)) -> Image.Image:
+    angle = random.uniform(*angle_range)
+    return img.rotate(angle, fillcolor=128)
 
-def random_shift(img: Image.Image) -> Image.Image:
-    shift_x = random.randint(-2, 2)
-    shift_y = random.randint(-2, 2)
+def random_shift(img: Image.Image, shift_range=(-2, 2)) -> Image.Image:
+    shift_x = random.randint(*shift_range)
+    shift_y = random.randint(*shift_range)
     return ImageChops.offset(img, shift_x, shift_y)
 
-def random_scale(img: Image.Image) -> Image.Image:
-    scale = random.uniform(0.9, 1.1)
+def random_scale(img: Image.Image, scale_range=(0.9, 1.1)) -> Image.Image:
+    scale = random.uniform(*scale_range)
     w, h = img.size
-    return img.resize((int(w * scale), int(h * scale)), Image.BILINEAR)
+    return img.resize((int(w * scale), int(h * scale)), Image.BICUBIC)
 
-def center_image(img: Image.Image) -> Image.Image:
-    img_final = Image.new("L", (48, 48), 0)
-    paste_x = max((48 - img.size[0]) // 2, 0)
-    paste_y = max((48 - img.size[1]) // 2, 0)
+def center_image(img: Image.Image, size=(48, 48)) -> Image.Image:
+    img_final = Image.new("L", size, 128)
+    paste_x = max((size[0] - img.size[0]) // 2, 0)
+    paste_y = max((size[1] - img.size[1]) // 2, 0)
     img_final.paste(img, (paste_x, paste_y))
     return img_final
 
@@ -105,7 +105,8 @@ def preprocess_and_augment(input_dir: str, output_dir: str, n_augment: int = 5):
 
 if __name__ == "__main__":
     preprocess_and_augment(
-        input_dir="../data/train",
-        output_dir="../data/train_augmented",
+        input_dir="data/train",
+        output_dir="data/train_augmented",
         n_augment=5
     )
+
