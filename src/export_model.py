@@ -1,8 +1,8 @@
 import torch
-from src.model import EmotionCNN
+from model import EmotionCNN
 
 model = EmotionCNN()
-model.load_state_dict(torch.load("models/best_model.pt", map_location="cpu"))
+model.load_state_dict(torch.load("models/best_model.pth", map_location="cpu"))
 model.eval()
 
 example_input = torch.randn(1, 1, 48, 48)
