@@ -29,8 +29,13 @@ def get_device(force_cuda: bool = True) -> torch.device:
 
 def load_model(model_path: str, num_classes: int = 7) -> tuple[nn.Module, torch.device]:
     device = get_device(force_cuda=False)
-    model = EmotionCNN(num_classes=num_classes).to(device)
-    model.load_state_dict(torch.load(model_path, map_location=device))
+    
+    if model_path.endswith('_traced.pt'):
+        model = torch.jit.load(model_path, map_location=device)
+    else:
+        model = EmotionCNN(num_classes=num_classes).to(device)
+        model.load_state_dict(torch.load(model_path, map_location=device))
+    
     model.eval()
     print(f"✅ Modèle chargé depuis : {model_path}")
     return model, device
