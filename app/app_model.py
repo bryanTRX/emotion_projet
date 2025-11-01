@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'
 from utils import load_model, preprocess_image, get_emotion_label
 
 def run_realtime_emotion_detection(
-    model_path: str = "../models/best_model.pth",
+    model_path: str = "models/best_model.pth",
     camera_index: int = 0,
     min_confidence: float = 0.5
 ):
