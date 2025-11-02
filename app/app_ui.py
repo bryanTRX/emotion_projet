@@ -274,7 +274,7 @@ class EmotionDetectionGUI(QMainWindow):
         self.current_confidence = 0.0
         
         # Configuration par défaut
-        self.model_path = "../models/best_model_traced.pt"
+        self.model_path = "models/best_model_traced.pt"
         self.camera_index = 0
         self.min_confidence = 0.5
         
